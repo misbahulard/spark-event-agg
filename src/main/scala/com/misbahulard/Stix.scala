@@ -15,7 +15,8 @@ object Stix {
       .builder()
       .appName("Ids to Stix")
       .master("local[2]")
-      .config("spark.mongodb.output.uri", "mongodb://10.252.108.98/stix.event")
+      // .config("spark.mongodb.output.uri", "mongodb://10.252.108.98/stix.event")
+      .config("spark.mongodb.output.uri", "mongodb://admin:jarkoM@localhost:27017/stix.event?replicaSet=rs0&authSource=admin")
       // .config("spark.sql.warehouse.dir", "file:///C:/temp") // Necessary to work around a Windows bug in Spark 2.0.0; omit if you're not on Windows.
       .getOrCreate()
 
@@ -52,7 +53,7 @@ object Stix {
     )
 
 //    val snortDf = spark.read.schema(schema).json("data/part-00000-143f4dec-d31d-4449-9510-4086bd77fa69-c000.json")
-    val snortDf = spark.read.schema(schema).json("hdfs://10.252.108.22:9000/user/hduser/kaspa/")
+    val snortDf = spark.read.schema(schema).json("hdfs://localhost:9000/user/hduser/kaspa/*")
 
 
     val snortDfGroup = snortDf.groupBy("src_ip", "dest_ip", "dest_port", "protocol", "alert_msg")
